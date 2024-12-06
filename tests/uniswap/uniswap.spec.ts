@@ -1,6 +1,5 @@
 import { orderRequestFlow } from "@/src/app/api/tools/uniswap/orderFlow";
-import { getZerionKey, OrderKind } from "@/src/app/api/tools/util";
-import { getSafeBalances } from "@bitteprotocol/agent-sdk";
+import { OrderKind } from "@/src/app/api/tools/util";
 import { getAddress } from "viem";
 
 // Safe Associated with max-normal.near on Bitte Wallet.
@@ -29,15 +28,5 @@ describe("Uniswap Plugin", () => {
     console.log(
       `https://wallet.bitte.ai/sign-evm?evmTx=${encodeURI(JSON.stringify(signRequest.transaction))}`,
     );
-  }, 10000);
-
-  it.only("getSafeBalances", async () => {
-    console.log("Requesting Balances...");
-    const balances = await getSafeBalances(
-      chainId,
-      DEPLOYED_SAFE,
-      getZerionKey(),
-    );
-    console.log(JSON.stringify(balances, null, 2));
   }, 10000);
 });
