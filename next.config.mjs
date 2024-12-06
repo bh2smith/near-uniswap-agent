@@ -8,6 +8,12 @@ const nextConfig = {
       },
     ];
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [...(config.externals || []), '@uniswap/smart-order-router'];
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -10,27 +10,13 @@ import { getClient } from "near-safe";
 import { Address } from "viem";
 
 export async function getRouter(chainId: number) {
-  const viemClient = getClient(chainId).transport.url;
-
-  const provider = new ethers.providers.StaticJsonRpcProvider(
-    viemClient.transport.url,
-    {
-      name: viemClient.chain.name,
-      chainId,
-    },
-  );
-
-  try {
-    const network = await provider.getNetwork();
-    console.log("Connected to network:", network.name, network.chainId);
-  } catch (e: unknown) {
-    console.error("Failed to connect to network:", e);
-    throw new Error(`Network connection failed: ${JSON.stringify(e)}`);
-  }
-
+  const viemClient = getClient(chainId);
   return new AlphaRouter({
     chainId,
-    provider,
+    provider: new ethers.providers.JsonRpcProvider(viemClient.transport.url, {
+      name: viemClient.chain?.name || "Unknown",
+      chainId,
+    }),
   });
 }
 
