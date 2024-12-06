@@ -26,6 +26,7 @@ export async function getRoute(
   from: Address,
 ): Promise<SwapRoute | null> {
   const router = await getRouter(chainId);
+  console.log("Got Router:");
   const options: SwapOptionsSwapRouter02 = {
     recipient: from,
     slippageTolerance: new Percent(100, 10_000),
@@ -33,7 +34,7 @@ export async function getRoute(
     type: SwapType.SWAP_ROUTER_02,
   };
   // const rawTokenAmountIn = parseUnits(amountIn, inToken.decimals);
-
+  console.log("Getting Route:", inToken, outToken, amountIn);
   return router.route(
     CurrencyAmount.fromRawAmount(inToken, amountIn.toString()),
     outToken,

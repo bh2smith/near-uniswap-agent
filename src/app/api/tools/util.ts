@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateRequest } from "@bitteprotocol/agent-sdk";
+import { BlockchainMapping, loadTokenMap, validateRequest } from "@bitteprotocol/agent-sdk";
 import { Address, getAddress } from "viem";
 import { MetaTransaction } from "near-safe";
 import { checkAllowance, erc20Approve } from "@bitteprotocol/agent-sdk";
+import { unstable_cache } from "next/cache";
 
 export async function validateNextRequest(
   req: NextRequest,
@@ -101,4 +102,19 @@ export function getZerionKey(): string {
 export function getSafeSaltNonce(): string {
   const bitteProtocolSaltNonce = "130811896738364156958237239906781888512";
   return process.env.SAFE_SALT_NONCE || bitteProtocolSaltNonce;
+}
+
+export async function getTokenMap(): Promise<BlockchainMapping> {
+  const getCachedTokenMap = unstable_cache(
+    async () => {
+      console.log("Loading TokenMap...");
+      return loadTokenMap(getEnvVar("TOKEN_MAP_URL"));
+    },
+    ["token-map"], // cache key
+    {
+      revalidate: 86400, // revalidate 24 hours
+      tags: ["token-map"],
+    },
+  );
+  return getCachedTokenMap();
 }

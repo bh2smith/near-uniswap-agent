@@ -34,8 +34,8 @@ export async function parseQuoteRequest(
     sellToken,
     buyToken,
     chainId,
-    sellAmount,
-    walletAddress: sender,
+    sellAmountBeforeFee: sellAmount,
+    safeAddress: sender,
   } = requestBody;
 
   if (sellAmount === "0") {

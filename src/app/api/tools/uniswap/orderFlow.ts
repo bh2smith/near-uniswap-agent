@@ -18,6 +18,7 @@ export async function orderRequestFlow({
     getToken(chainId, quoteRequest.sellToken),
     getToken(chainId, quoteRequest.buyToken),
   ]);
+  console.log("Got Tokens:", sellToken, buyToken);
   const route = await getRoute(
     chainId,
     quoteRequest.amount,
@@ -25,6 +26,7 @@ export async function orderRequestFlow({
     buyToken,
     quoteRequest.walletAddress,
   );
+  console.log("Got Route:");
   if (!route || !route.methodParameters) {
     // Handle failed request
     throw new Error(
