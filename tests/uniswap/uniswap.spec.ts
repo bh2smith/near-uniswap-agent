@@ -1,5 +1,4 @@
 import { orderRequestFlow } from "@/src/app/api/tools/uniswap/orderFlow";
-import { OrderKind } from "@/src/app/api/tools/util";
 import { getAddress } from "viem";
 
 // Safe Associated with max-normal.near on Bitte Wallet.
@@ -9,20 +8,17 @@ const chainId = 8453; // BASE
 const quoteRequest = {
   chainId,
   walletAddress: DEPLOYED_SAFE,
-  sellToken: getAddress("0x4200000000000000000000000000000000000006"), // WETH
-  buyToken: getAddress("0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"), // USDC
-  receiver: DEPLOYED_SAFE,
-  kind: OrderKind.SELL,
-  amount: 2000000000000000n,
+  buyToken: getAddress("0x4200000000000000000000000000000000000006"), // WETH
+  sellToken: getAddress("0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"), // USDC
+  amount: 1000000n,
 };
 
 describe("Uniswap Plugin", () => {
   // Swaps 0.1 COW to WXDAI on Gnosis Chain using Uniswap API
-  it.skip("orderRequestFlow", async () => {
-    console.log("Requesting Quote...");
+  it("orderRequestFlow", async () => {
     const signRequest = await orderRequestFlow({
       chainId,
-      quoteRequest: { ...quoteRequest },
+      quoteRequest,
     });
     console.log(JSON.stringify(signRequest, null, 2));
     console.log(
