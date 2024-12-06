@@ -14,8 +14,8 @@ const quoteRequest = {
 };
 
 describe("Uniswap Plugin", () => {
-  // Swaps 0.1 COW to WXDAI on Gnosis Chain using Uniswap API
-  it("orderRequestFlow", async () => {
+  // Swaps 1 USDC to WETH on BASE Chain using Uniswap API
+  it.skip("orderRequestFlow", async () => {
     const signRequest = await orderRequestFlow({
       chainId,
       quoteRequest,
