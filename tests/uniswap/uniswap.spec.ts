@@ -8,8 +8,8 @@ const chainId = 8453; // BASE
 const quoteRequest = {
   chainId,
   walletAddress: DEPLOYED_SAFE,
-  buyToken: getAddress("0x4200000000000000000000000000000000000006"), // WETH
   sellToken: getAddress("0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"), // USDC
+  buyToken: getAddress("0x4200000000000000000000000000000000000006"), // WETH
   amount: 1000000n,
 };
 
