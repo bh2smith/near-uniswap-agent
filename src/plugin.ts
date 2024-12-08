@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config();
+
 const key = JSON.parse(process.env.BITTE_KEY || "{}");
 const bitteConfig = JSON.parse(process.env.BITTE_CONFIG || "{}");
 if (!key?.accountId) {

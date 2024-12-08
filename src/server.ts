@@ -20,7 +20,6 @@ app.use("/api/tools/uniswap", uniswapRouter);
 
 // Expose plugin manifest at /.well-known/ai-plugin.json
 app.get("/.well-known/ai-plugin.json", (_, res) => {
-  console.log("Serving plugin manifest");
   res.json(pluginData);
 });
 
