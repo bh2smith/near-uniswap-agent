@@ -1,4 +1,3 @@
-import { NextRequest } from "next/server";
 import { Address, getAddress, isAddress, parseUnits } from "viem";
 import {
   getTokenDetails,
@@ -8,7 +7,7 @@ import {
   BlockchainMapping,
 } from "@bitteprotocol/agent-sdk";
 import { NATIVE_ASSET } from "../util";
-
+import { Request } from "express";
 export type QuoteParams = {
   sellToken: Address;
   buyToken: Address;
@@ -22,12 +21,12 @@ export interface ParsedQuoteRequest {
 }
 
 export async function parseQuoteRequest(
-  req: NextRequest,
+  req: Request,
   tokenMap: BlockchainMapping,
   zerionKey?: string,
 ): Promise<ParsedQuoteRequest> {
   // TODO - Add Type Guard on Request (to determine better if it needs processing below.)
-  const requestBody = await req.json();
+  const requestBody = req.body;
   console.log("Raw Request Body:", requestBody);
   // TODO: Validate input with new validation tools:
   const {

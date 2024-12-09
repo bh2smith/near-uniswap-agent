@@ -1,25 +1,24 @@
-import { NextRequest, NextResponse } from "next/server";
 import {
   BlockchainMapping,
   loadTokenMap,
-  validateRequest,
+  checkAllowance,
+  erc20Approve,
 } from "@bitteprotocol/agent-sdk";
 import { Address, getAddress } from "viem";
 import { MetaTransaction } from "near-safe";
-import { checkAllowance, erc20Approve } from "@bitteprotocol/agent-sdk";
-import { unstable_cache } from "next/cache";
 
-export async function validateNextRequest(
-  req: NextRequest,
-  safeSaltNonce?: string,
-): Promise<NextResponse | null> {
-  return validateRequest<NextRequest, NextResponse>(
-    req,
-    safeSaltNonce || "0",
-    (data: unknown, init?: { status?: number }) =>
-      NextResponse.json(data, init),
-  );
-}
+// TODO: fix this
+// export async function validateExpressRequest(
+//   req: Request,
+//   safeSaltNonce?: string,
+// ): Promise<ExpressResponse | null> {
+//   return validateRequest<Request, Response>(
+//     req,
+//     safeSaltNonce || "0",
+//     (data: unknown, init?: { status?: number }) =>
+//       Response.json(data, init),
+//   );
+// }
 
 // CoW (and many other Dex Protocols use this to represent native asset).
 export const NATIVE_ASSET = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
@@ -108,17 +107,13 @@ export function getSafeSaltNonce(): string {
   return process.env.SAFE_SALT_NONCE || bitteProtocolSaltNonce;
 }
 
+let tokenMapInstance: BlockchainMapping | null = null;
+
 export async function getTokenMap(): Promise<BlockchainMapping> {
-  const getCachedTokenMap = unstable_cache(
-    async () => {
-      console.log("Loading TokenMap...");
-      return loadTokenMap(getEnvVar("TOKEN_MAP_URL"));
-    },
-    ["token-map"], // cache key
-    {
-      revalidate: 86400, // revalidate 24 hours
-      tags: ["token-map"],
-    },
-  );
-  return getCachedTokenMap();
+  if (tokenMapInstance) {
+    return tokenMapInstance;
+  }
+  console.log("Loading TokenMap...");
+  tokenMapInstance = await loadTokenMap(getEnvVar("TOKEN_MAP_URL"));
+  return tokenMapInstance;
 }

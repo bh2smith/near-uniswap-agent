@@ -1,5 +1,5 @@
-import { orderRequestFlow } from "@/src/app/api/tools/uniswap/orderFlow";
 import { getAddress } from "viem";
+import { orderRequestFlow } from "../../src/tools/uniswap/orderFlow";
 
 // Safe Associated with max-normal.near on Bitte Wallet.
 const DEPLOYED_SAFE = getAddress("0x54F08c27e75BeA0cdDdb8aA9D69FD61551B19BbA");
