@@ -10,7 +10,7 @@ import { Router, Request, Response } from "express";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   // const headerError = await validateExpressRequest(req, getSafeSaltNonce());
   // if (headerError) return headerError;
 

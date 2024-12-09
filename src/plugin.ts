@@ -1,4 +1,4 @@
-import { config } from 'dotenv';
+import { config } from "dotenv";
 config();
 
 const key = JSON.parse(process.env.BITTE_KEY || "{}");

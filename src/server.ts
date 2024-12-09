@@ -24,7 +24,13 @@ app.get("/.well-known/ai-plugin.json", (_, res) => {
 });
 
 // Swagger documentation
-app.use("/", swaggerUi.serve, swaggerUi.setup(pluginData));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(pluginData));
+
+// Add this AFTER all your defined routes
+app.use((req, res, next) => {
+  console.log(`⚠️  No route found for ${req.method} ${req.path}`);
+  next();
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
