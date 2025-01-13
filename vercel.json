@@ -1,6 +1,1 @@
-{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/api" }],   "routes": [
-  {
-    "src": "/docs/(.*\\.(?:js|css|png|ico|json))",
-    "dest": "src/server.ts"
-  }
-] }
+{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/api" }] }
