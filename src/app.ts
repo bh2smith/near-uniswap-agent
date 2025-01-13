@@ -24,7 +24,7 @@ app.get("/.well-known/ai-plugin.json", (_, res) => {
 });
 
 // Swagger documentation
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(pluginData));
+app.use(["/docs", "/docs/"], swaggerUi.serve, swaggerUi.setup(pluginData));
 
 app.get("/", (_, res) => {
   res.redirect("/docs");
