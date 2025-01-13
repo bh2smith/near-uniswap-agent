@@ -4,10 +4,11 @@
   "private": true,
   "main": "src/index.ts",
   "scripts": {
+    "start": "tsx src/app.ts",
+    "build": "tsc",
+    "start:dist": "node dist/src/app.js",
     "dev": "concurrently \"tsx src/app.ts\" \"make-agent dev -p 3000\"",
     "dev-testnet": "concurrently \"tsx src/app.ts\" \"make-agent dev -p 3000 -t\"",
-    "build": "tsc",
-    "start": "tsx src/app.ts",
     "serve": "node dist/app.js",
     "lint": "eslint '{src,tests}/**/*.{js,jsx,ts,tsx}'",
     "fmt": "eslint --fix '{src,tests}/**/*.{js,jsx,ts,tsx}' && prettier --write '{src,tests}/**/*.{js,jsx,ts,tsx}'",
