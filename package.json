@@ -23,7 +23,6 @@
     "ethers": "^5.7.2",
     "express": "^4.21.2",
     "near-safe": "^0.9.4",
-    "swagger-ui-express": "^5.0.1",
     "viem": "^2.21.54",
     "zerion-sdk": "^0.0.13"
   },

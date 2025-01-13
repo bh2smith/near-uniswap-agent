@@ -1,8 +1,6 @@
 import express from "express";
 import cors from "cors";
-import path from "path";
 import { config } from "dotenv";
-import swaggerUi from "swagger-ui-express";
 import { healthRouter } from "./routes/health";
 import { uniswapRouter } from "./routes/uniswap";
 import { pluginData } from "./plugin";
@@ -24,29 +22,8 @@ app.get("/.well-known/ai-plugin.json", (_, res) => {
   res.json(pluginData);
 });
 
-// Serve Swagger UI static files
-app.use(
-  "/docs",
-  express.static(
-    path.join(__dirname, "../node_modules/swagger-ui-express/static"),
-  ),
-);
-
-// Swagger docume ntation
-app.use(
-  ["/docs", "/docs/"],
-  swaggerUi.serve,
-  swaggerUi.setup(pluginData, {
-    explorer: true,
-    customCss: ".swagger-ui .topbar { display: none }",
-    swaggerOptions: {
-      url: "/.well-known/ai-plugin.json",
-    },
-  }),
-);
-
 app.get("/", (_, res) => {
-  res.redirect("/docs");
+  res.redirect("/.well-known/ai-plugin.json");
 });
 
 // Add a catch-all handler for other unhandled routes
