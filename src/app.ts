@@ -32,7 +32,8 @@ app.use((req, res) => {
   if (
     !req.path.includes("sw.js") &&
     !req.path.includes("workbox") &&
-    !req.path.includes("fallback")
+    !req.path.includes("fallback") &&
+    !req.path.includes("favicon")
   ) {
     console.log(`⚠️  No route found for ${req.method} ${req.path}`);
   }
