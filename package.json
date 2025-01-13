@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@bitte-ai/agent-sdk": "^0.1.0",
-    "@uniswap/sdk-core": "^6.1.0",
+    "@uniswap/sdk-core": "^7.0.1",
     "@uniswap/smart-order-router": "^4.8.6",
     "cors": "^2.8.5",
     "ethers": "^5.7.2",
