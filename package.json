@@ -7,12 +7,11 @@
     "dev": "concurrently \"tsx src/app.ts\" \"make-agent dev -p 3000\"",
     "dev-testnet": "concurrently \"tsx src/app.ts\" \"make-agent dev -p 3000 -t\"",
     "build": "tsc",
-    "start": "tsx src/app.ts",
+    "start": "node dist/api/index.js",
     "serve": "bun dist/app.js",
     "lint": "eslint '{src,tests}/**/*.{js,jsx,ts,tsx}'",
     "fmt": "eslint --fix '{src,tests}/**/*.{js,jsx,ts,tsx}' && prettier --write '{src,tests}/**/*.{js,jsx,ts,tsx}'",
-    "test": "jest --config jest.config.ts",
-    "vercel-build": "tsc"
+    "test": "jest --config jest.config.ts"
   },
   "dependencies": {
     "@bitteprotocol/agent-sdk": "^0.0.10",
