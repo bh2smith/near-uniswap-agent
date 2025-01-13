@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
 import { config } from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import { healthRouter } from "./routes/health";
@@ -23,8 +24,26 @@ app.get("/.well-known/ai-plugin.json", (_, res) => {
   res.json(pluginData);
 });
 
-// Swagger documentation
-app.use(["/docs", "/docs/"], swaggerUi.serve, swaggerUi.setup(pluginData));
+// Serve Swagger UI static files
+app.use(
+  "/docs",
+  express.static(
+    path.join(__dirname, "../node_modules/swagger-ui-express/static"),
+  ),
+);
+
+// Swagger docume ntation
+app.use(
+  ["/docs", "/docs/"],
+  swaggerUi.serve,
+  swaggerUi.setup(pluginData, {
+    explorer: true,
+    customCss: ".swagger-ui .topbar { display: none }",
+    swaggerOptions: {
+      url: "/.well-known/ai-plugin.json",
+    },
+  }),
+);
 
 app.get("/", (_, res) => {
   res.redirect("/docs");
