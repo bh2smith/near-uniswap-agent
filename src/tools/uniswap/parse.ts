@@ -5,7 +5,7 @@ import {
   getSafeBalances,
   TokenBalance,
   BlockchainMapping,
-} from "@bitteprotocol/agent-sdk";
+} from "@bitte-ai/agent-sdk";
 import { NATIVE_ASSET } from "../util";
 import { Request } from "express";
 export type QuoteParams = {

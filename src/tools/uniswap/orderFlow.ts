@@ -1,7 +1,7 @@
 import { getClient, MetaTransaction, SignRequestData } from "near-safe";
 import { ParsedQuoteRequest } from "./parse";
 import { Address, erc20Abi, getAddress } from "viem";
-import { signRequestFor } from "@bitteprotocol/agent-sdk";
+import { signRequestFor } from "@bitte-ai/agent-sdk";
 import { getRoute } from "./quote";
 import { Token } from "@uniswap/sdk-core";
 import { sellTokenApprovalTx } from "../util";

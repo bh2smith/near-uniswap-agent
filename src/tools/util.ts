@@ -3,7 +3,7 @@ import {
   loadTokenMap,
   checkAllowance,
   erc20Approve,
-} from "@bitteprotocol/agent-sdk";
+} from "@bitte-ai/agent-sdk";
 import { Address, getAddress } from "viem";
 import { MetaTransaction } from "near-safe";
 

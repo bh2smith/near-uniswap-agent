@@ -18,7 +18,7 @@ const jestConfig = {
   setupFiles: ['dotenv/config'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
   transformIgnorePatterns: [
-    'node_modules/(?!(@bitteprotocol/agent-sdk)/)',
+    'node_modules/(?!(@bitte-ai/agent-sdk)/)',
   ],
 };
 

@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "main": "src/index.ts",
-  "type": "module",
   "scripts": {
     "start": "tsx src/app.ts",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "start:dist": "node dist/src/app.js",
     "dev": "concurrently \"tsx src/app.ts\" \"make-agent dev -p 3000\"",
     "dev-testnet": "concurrently \"tsx src/app.ts\" \"make-agent dev -p 3000 -t\"",
@@ -17,7 +16,7 @@
     "vercel-build": "echo hello"
   },
   "dependencies": {
-    "@bitteprotocol/agent-sdk": "^0.0.10",
+    "@bitte-ai/agent-sdk": "^0.1.0",
     "@uniswap/sdk-core": "^6.1.0",
     "@uniswap/smart-order-router": "^4.8.6",
     "cors": "^2.8.5",
