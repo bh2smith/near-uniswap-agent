@@ -1,8 +1,1 @@
-{
-  "functions": {
-    "api/index.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
-  "builds": [{ "src": "src/**/*.ts", "use": "@vercel/node" }]
-}
+{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/api" }] }
