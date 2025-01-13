@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "main": "src/index.ts",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "tsx src/app.ts",
     "build": "tsc",
