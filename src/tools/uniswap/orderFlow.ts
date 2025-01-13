@@ -18,6 +18,8 @@ export async function orderRequestFlow({
     getToken(chainId, quoteRequest.sellToken),
     getToken(chainId, quoteRequest.buyToken),
   ]);
+  console.log("sellToken", sellToken);
+  console.log("buyToken", buyToken);
   const route = await getRoute(
     chainId,
     quoteRequest.amount,
@@ -31,6 +33,7 @@ export async function orderRequestFlow({
       `Failed to get route on ${chainId} for ${JSON.stringify(quoteRequest)}`,
     );
   }
+  console.log("route", route);
   const metaTransactions: MetaTransaction[] = [];
   const approvalTx = await sellTokenApprovalTx({
     fromTokenAddress: sellToken.address,
@@ -49,6 +52,7 @@ export async function orderRequestFlow({
     data: route.methodParameters.calldata,
     value: route.methodParameters.value,
   };
+  console.log("swapTx", swapTx);
   metaTransactions.push(swapTx);
   return {
     transaction: signRequestFor({
