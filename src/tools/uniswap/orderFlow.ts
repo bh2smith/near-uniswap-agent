@@ -1,10 +1,10 @@
 import { getClient, MetaTransaction, SignRequestData } from "near-safe";
 import { ParsedQuoteRequest } from "./parse";
 import { Address, erc20Abi, getAddress } from "viem";
-import { signRequestFor } from "@bitte-ai/agent-sdk";
+import { getNativeAsset, signRequestFor, wrapMetaTransaction } from "@bitte-ai/agent-sdk";
 import { getRoute } from "./quote";
 import { Token } from "@uniswap/sdk-core";
-import { sellTokenApprovalTx } from "../util";
+import { isNativeAsset, sellTokenApprovalTx } from "../util";
 
 // https://docs.uniswap.org/sdk/v3/guides/swaps/routing
 export async function orderRequestFlow({
@@ -14,12 +14,17 @@ export async function orderRequestFlow({
   transaction: SignRequestData;
   meta: { orderData: string };
 }> {
+  const metaTransactions: MetaTransaction[] = [];
+  if (isNativeAsset(quoteRequest.sellToken)) {
+    metaTransactions.push(
+      wrapMetaTransaction(chainId, BigInt(quoteRequest.amount)),
+    );
+    quoteRequest.sellToken = getNativeAsset(chainId).address;
+  }
   const [sellToken, buyToken] = await Promise.all([
     getToken(chainId, quoteRequest.sellToken),
     getToken(chainId, quoteRequest.buyToken),
   ]);
-  console.log("sellToken", sellToken);
-  console.log("buyToken", buyToken);
   const route = await getRoute(
     chainId,
     quoteRequest.amount,
@@ -33,8 +38,7 @@ export async function orderRequestFlow({
       `Failed to get route on ${chainId} for ${JSON.stringify(quoteRequest)}`,
     );
   }
-  console.log("route", JSON.stringify(route, null, 2));
-  const metaTransactions: MetaTransaction[] = [];
+  console.log("Route", JSON.stringify(route, null, 2));
   const approvalTx = await sellTokenApprovalTx({
     fromTokenAddress: sellToken.address,
     chainId,

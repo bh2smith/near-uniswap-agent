@@ -16,13 +16,13 @@
     "vercel-build": "echo hello"
   },
   "dependencies": {
-    "@bitte-ai/agent-sdk": "^0.1.1",
+    "@bitte-ai/agent-sdk": "^0.1.2",
     "@uniswap/sdk-core": "^7.1.0",
     "@uniswap/smart-order-router": "^4.8.6",
     "cors": "^2.8.5",
     "ethers": "^5.7.2",
     "express": "^4.21.2",
-    "near-safe": "^0.9.4",
+    "near-safe": "^0.9.6",
     "viem": "^2.21.54",
     "zerion-sdk": "^0.0.13"
   },
