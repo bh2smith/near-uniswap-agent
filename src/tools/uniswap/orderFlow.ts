@@ -18,6 +18,7 @@ export async function orderRequestFlow({
   transaction: SignRequestData;
   meta: { orderData: string };
 }> {
+  console.log("Quote Request", quoteRequest);
   const metaTransactions: MetaTransaction[] = [];
   if (isNativeAsset(quoteRequest.sellToken)) {
     metaTransactions.push(
@@ -29,8 +30,6 @@ export async function orderRequestFlow({
     getToken(chainId, quoteRequest.sellToken),
     getToken(chainId, quoteRequest.buyToken),
   ]);
-  console.log("Sell Token:", JSON.stringify(sellToken, null, 2));
-  console.log("Buy Token:", JSON.stringify(buyToken, null, 2));
   const route = await getRoute(
     chainId,
     quoteRequest.amount,
@@ -38,13 +37,11 @@ export async function orderRequestFlow({
     buyToken,
     quoteRequest.walletAddress,
   );
-  console.log("Got Route");
   if (!route || !route.methodParameters) {
     // Handle failed request
-    throw new Error(
-      `Failed to get route on ${chainId} for ${JSON.stringify(quoteRequest)}`,
-    );
+    throw new Error(`Failed to get route on ${chainId} for quoteRequest`);
   }
+  console.log("Route found!");
   const approvalTx = await sellTokenApprovalTx({
     fromTokenAddress: sellToken.address,
     chainId,

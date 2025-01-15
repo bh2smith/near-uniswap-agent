@@ -6,13 +6,13 @@ import { getTokenMap } from "../../src/tools/util";
 // Safe Associated with max-normal.near on Bitte Wallet.
 const DEPLOYED_SAFE = getAddress("0x54F08c27e75BeA0cdDdb8aA9D69FD61551B19BbA");
 
-const chainId = 43114; // BASE
+const chainId = 10; // BASE
 const rawQuote = {
   chainId,
   safeAddress: DEPLOYED_SAFE,
   sellToken: "USDC",
-  buyToken: "WAVAX",
-  sellAmountBeforeFee: "1",
+  buyToken: "USDT",
+  sellAmountBeforeFee: "0.5",
 };
 
 describe("Uniswap Plugin", () => {
