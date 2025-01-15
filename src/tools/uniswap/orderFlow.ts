@@ -29,6 +29,8 @@ export async function orderRequestFlow({
     getToken(chainId, quoteRequest.sellToken),
     getToken(chainId, quoteRequest.buyToken),
   ]);
+  console.log("Sell Token:", JSON.stringify(sellToken, null, 2));
+  console.log("Buy Token:", JSON.stringify(buyToken, null, 2));
   const route = await getRoute(
     chainId,
     quoteRequest.amount,
@@ -36,13 +38,13 @@ export async function orderRequestFlow({
     buyToken,
     quoteRequest.walletAddress,
   );
+  console.log("Got Route");
   if (!route || !route.methodParameters) {
     // Handle failed request
     throw new Error(
       `Failed to get route on ${chainId} for ${JSON.stringify(quoteRequest)}`,
     );
   }
-  console.log("Route", JSON.stringify(route, null, 2));
   const approvalTx = await sellTokenApprovalTx({
     fromTokenAddress: sellToken.address,
     chainId,
@@ -97,12 +99,16 @@ export async function getToken(
   return new Token(chainId, address, decimals, symbol, name);
 }
 
+const swapRouterOverrides: Map<number, string> = new Map([
+  [8453, "0x2626664c2603336E57B271c5C0b26F421741e481"], // Base
+  [56, "0xB971eF87ede563556b2ED4b1C0b0019111Dd85d2"], // BNB Chain
+  [43114, "0xbb00FF08d01D300023C629E8fFfFcb65A5a578cE"], // Avalanche C-Chain
+  [42220, "0x5615CDAb10dc425a742d643d949a7F474C01abc4"], // Celo
+  [81457, "0x549FEB8c9bd4c12Ad2AB27022dA12492aC452B66"], // Blast
+]);
+
 function getSwapRouterAddress(chainId: number): Address {
-  if (chainId === 8453) {
-    return "0x2626664c2603336E57B271c5C0b26F421741e481";
-  }
-  if (chainId === 42220) {
-    return "0x5615CDAb10dc425a742d643d949a7F474C01abc4";
-  }
-  return "0xE592427A0AEce92De3Edee1F18E0157C05861564";
+  // https://docs.uniswap.org/contracts/v3/reference/deployments/
+  const defaultSwapRouter = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
+  return getAddress(swapRouterOverrides.get(chainId) || defaultSwapRouter);
 }

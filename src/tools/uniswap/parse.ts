@@ -7,7 +7,6 @@ import {
   BlockchainMapping,
 } from "@bitte-ai/agent-sdk";
 import { NATIVE_ASSET } from "../util";
-import { Request } from "express";
 export type QuoteParams = {
   sellToken: Address;
   buyToken: Address;
@@ -20,8 +19,21 @@ export interface ParsedQuoteRequest {
   chainId: number;
 }
 
+type QuoteRequestBody = {
+  sellToken: string;
+  buyToken: string;
+  chainId: number;
+  sellAmountBeforeFee: string;
+  safeAddress: Address;
+};
+
+// Define a looser request type
+type LooseRequest = {
+  body: QuoteRequestBody;
+};
+
 export async function parseQuoteRequest(
-  req: Request,
+  req: LooseRequest,
   tokenMap: BlockchainMapping,
   zerionKey?: string,
 ): Promise<ParsedQuoteRequest> {

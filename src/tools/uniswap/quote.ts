@@ -13,7 +13,7 @@ export async function getRouter(chainId: number) {
   const viemClient = getClient(chainId);
   return new AlphaRouter({
     chainId,
-    provider: new ethers.providers.JsonRpcProvider(viemClient.transport.url, {
+    provider: new ethers.providers.JsonRpcProvider(viemClient.transport.http, {
       name: viemClient.chain?.name || "Unknown",
       chainId,
     }),
