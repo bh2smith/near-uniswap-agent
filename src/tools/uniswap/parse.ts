@@ -7,6 +7,7 @@ import {
   BlockchainMapping,
 } from "@bitte-ai/agent-sdk";
 import { NATIVE_ASSET } from "../util";
+import { Network } from "near-safe";
 export type QuoteParams = {
   sellToken: Address;
   buyToken: Address;
@@ -59,9 +60,11 @@ export async function parseQuoteRequest(
     getSafeBalances(chainId, sender, zerionKey),
     getTokenDetails(chainId, buyToken, tokenMap),
   ]);
-  const sellTokenData = sellTokenAvailable(balances, sellToken);
+  const sellTokenData = sellTokenAvailable(chainId, balances, sellToken);
   if (!buyTokenData) {
-    throw new Error(`Buy Token not found ${buyToken}`);
+    throw new Error(
+      `Buy Token not found '${buyToken}': supply address if known`,
+    );
   }
   return {
     chainId,
@@ -75,6 +78,7 @@ export async function parseQuoteRequest(
 }
 
 function sellTokenAvailable(
+  chainId: number,
   balances: TokenBalance[],
   sellTokenSymbolOrAddress: string,
 ): TokenInfo {
@@ -99,5 +103,11 @@ function sellTokenAvailable(
       symbol: balance.token?.symbol || "UNKNOWN",
     };
   }
-  throw new Error("Sell token not found in balances");
+  throw new Error(
+    `Sell token (${sellTokenSymbolOrAddress}) not found in balances: ${balances.map((b) => b.token?.symbol || nativeAssetSymbol(chainId)).join(",")}`,
+  );
+}
+
+function nativeAssetSymbol(chainId: number): string {
+  return Network.fromChainId(chainId).nativeCurrency.symbol;
 }
