@@ -60,7 +60,9 @@ export async function parseQuoteRequest(
     getTokenDetails(chainId, buyToken, tokenMap),
   ]);
   const sellTokenData = sellTokenAvailable(balances, sellToken);
-
+  if (!buyTokenData) {
+    throw new Error(`Buy Token not found ${buyToken}`);
+  }
   return {
     chainId,
     quoteRequest: {
