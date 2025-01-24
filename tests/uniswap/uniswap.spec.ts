@@ -17,7 +17,7 @@ const rawQuote = {
 
 describe("Uniswap Plugin", () => {
   // Swaps 1 USDC to WETH on BASE Chain using Uniswap API
-  it.skip("orderRequestFlow", async () => {
+  it("orderRequestFlow", async () => {
     const quoteRequest = await parseQuoteRequest(
       { body: { ...rawQuote } },
       await getTokenMap(),
@@ -28,5 +28,5 @@ describe("Uniswap Plugin", () => {
     console.log(
       `https://wallet.bitte.ai/sign-evm?evmTx=${encodeURI(JSON.stringify(signRequest.transaction))}`,
     );
-  }, 10000);
+  }, 30000);
 });
