@@ -119,6 +119,50 @@ export const pluginData = {
           "Quote a price and fee for the specified order parameters. Posts unsigned order to Uniswap and returns Signable payload",
         description:
           "Given a partial order compute the minimum fee and a price estimate for the order. Return a full order that can be used directly for signing, and with an included signature, passed directly to the order creation endpoint.",
+        parameters: [
+          { $ref: "#/components/parameters/chainId" },
+          { $ref: "#/components/parameters/safeAddress" },
+          {
+            in: "query",
+            name: "sellToken",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description:
+              "The ERC-20 token symbol or address to be sold, if provided with the symbol do not try to infer the address.",
+          },
+          {
+            in: "query",
+            name: "buyToken",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description:
+              "The ERC-20 token symbol or address to be bought, if provided with the symbol do not try to infer the address..",
+          },
+          {
+            in: "query",
+            name: "receiver",
+            required: false,
+            schema: {
+              type: "string",
+            },
+            description:
+              "The address to receive the proceeds of the trade, instead of the sender's address.",
+          },
+          {
+            in: "query",
+            name: "sellAmountBeforeFee",
+            required: true,
+            schema: {
+              type: "string",
+            },
+            description:
+              "The amount of tokens to sell before fees, represented as a decimal string in token units. Not Atoms.",
+          },
+        ],
         requestBody: {
           description: "The order parameters to compute a quote for.",
           required: true,
