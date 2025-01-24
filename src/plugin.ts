@@ -57,6 +57,60 @@ export const pluginData = {
         },
       },
     },
+    "/api/tools/balances": {
+      get: {
+        tags: ["balances"],
+        summary: "Get Token Balances",
+        description: "Returns token balances for the connected wallet",
+        operationId: "get-balances",
+        parameters: [
+          { $ref: "#/components/parameters/chainId" },
+          { $ref: "#/components/parameters/safeAddress" },
+        ],
+        responses: {
+          "200": {
+            description: "List of token balances",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "array",
+                  items: {
+                    type: "object",
+                    properties: {
+                      token: {
+                        $ref: "#/components/schemas/Address",
+                      },
+                      balance: {
+                        type: "string",
+                        description: "Token balance in smallest units (wei)",
+                        example: "1000000000000000000",
+                      },
+                      symbol: {
+                        type: "string",
+                        description: "Token symbol",
+                        example: "USDC",
+                      },
+                      decimals: {
+                        type: "number",
+                        description: "Token decimals",
+                        example: 18,
+                      },
+                      logoUri: {
+                        type: "string",
+                        description: "Token logo URI",
+                        example: "https://example.com/token-logo.png",
+                      },
+                    },
+                    required: ["token", "balance", "symbol", "decimals"],
+                  },
+                },
+              },
+            },
+          },
+          "400": { $ref: "#/components/responses/BadRequest400" },
+        },
+      },
+    },
     "/api/tools/uniswap": {
       post: {
         tags: ["uniswap"],
