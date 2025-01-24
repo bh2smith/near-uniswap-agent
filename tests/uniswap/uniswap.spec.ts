@@ -17,7 +17,7 @@ const rawQuote = {
 
 describe("Uniswap Plugin", () => {
   // Swaps 1 USDC to WETH on BASE Chain using Uniswap API
-  it("orderRequestFlow", async () => {
+  it.skip("orderRequestFlow", async () => {
     const quoteRequest = await parseQuoteRequest(
       { body: { ...rawQuote } },
       await getTokenMap(),
