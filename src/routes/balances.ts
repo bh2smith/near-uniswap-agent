@@ -8,7 +8,7 @@ import {
   TokenBalance,
 } from "@bitte-ai/agent-sdk";
 import { Address } from "viem";
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 
 import { getZerionKey } from "../tools/util";
 
@@ -36,8 +36,8 @@ async function logic(req: Request): Promise<TokenBalance[]> {
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
-  return handleRequest(req, logic, (x) => res.status(200).json(x));
+router.get("/", (req: Request, res: Response, next: NextFunction) => {
+  handleRequest(req, logic, (x) => res.status(200).json(x)).catch(next);
 });
 
 export { router as balancesRouter };
