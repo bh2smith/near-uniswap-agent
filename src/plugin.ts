@@ -14,7 +14,7 @@ export const pluginData = {
   info: {
     title: "Bitte Uniswap Agent",
     description: "API for interactions with Uniswap V3",
-    version: "1.0.0",
+    version: "1.0.1",
   },
   servers: [{ url }],
   "x-mb": {
