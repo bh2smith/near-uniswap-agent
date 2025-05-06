@@ -6,14 +6,13 @@ import {
 import { SwapOptionsSwapRouter02, SwapType } from "@uniswap/smart-order-router";
 import { Percent, Token, TradeType } from "@uniswap/sdk-core";
 import { ethers } from "ethers";
-import { Network } from "near-safe";
 import { Address } from "viem";
+import { getRpcUrl } from "../rpc";
 
 export async function getRouter(chainId: number) {
-  const network = Network.fromChainId(chainId);
   return new AlphaRouter({
     chainId,
-    provider: new ethers.providers.JsonRpcProvider(network.rpcUrl, {
+    provider: new ethers.providers.JsonRpcProvider(getRpcUrl(chainId), {
       name: network.name,
       chainId,
     }),
