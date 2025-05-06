@@ -18,7 +18,9 @@ async function logic(req: Request): Promise<TxData> {
     getZerionKey(),
   );
   console.log("POST Request for quote:", parsedRequest);
-  return orderRequestFlow(parsedRequest);
+  const result = await orderRequestFlow(parsedRequest);
+  console.log("Order request flow result:", result);
+  return result;
 }
 
 router.post("/", (req: Request, res: Response, next: NextFunction) => {

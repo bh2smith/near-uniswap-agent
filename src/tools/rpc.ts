@@ -31,8 +31,10 @@ function getAlchemyRpcUrl(chainId: number): string | null {
   if (!alchemyRpc) return null;
 
   const apiKey = process.env.ALCHEMY_API_KEY;
-  if (!apiKey) return null;
-
+  if (!apiKey) {
+    console.warn("ALCHEMY_API_KEY is not set");
+    return null;
+  }
   return `${alchemyRpc}/${apiKey}`;
 }
 
