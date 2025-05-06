@@ -13,7 +13,8 @@ export async function getRouter(chainId: number) {
   return new AlphaRouter({
     chainId,
     provider: new ethers.providers.JsonRpcProvider(getRpcUrl(chainId), {
-      name: network.name,
+      // this seems irrelevant, but it's required by ethers
+      name: "Chain " + chainId,
       chainId,
     }),
   });
