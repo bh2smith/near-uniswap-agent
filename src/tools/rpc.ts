@@ -1,4 +1,5 @@
 import { Network } from "near-safe";
+import { createPublicClient, http, PublicClient } from "viem";
 
 // Alchemy RPC endpoints for different chains
 const ALCHEMY_RPC_ENDPOINTS: Record<number, string> = {
@@ -54,4 +55,10 @@ export function getRpcUrl(chainId: number): string {
   // Finally fallback to near-safe Network
   const network = Network.fromChainId(chainId);
   return network.rpcUrl;
+}
+
+export function getViemClient(chainId: number): PublicClient {
+  return createPublicClient({
+    transport: http(getRpcUrl(chainId)),
+  });
 }

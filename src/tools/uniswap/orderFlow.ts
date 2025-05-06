@@ -1,4 +1,4 @@
-import { getClient, MetaTransaction, SignRequestData } from "near-safe";
+import { MetaTransaction, SignRequestData } from "near-safe";
 import { ParsedQuoteRequest } from "./parse";
 import { Address, erc20Abi, getAddress } from "viem";
 import {
@@ -9,6 +9,7 @@ import {
 import { getRoute } from "./quote";
 import { Token } from "@uniswap/sdk-core";
 import { isNativeAsset, sellTokenApprovalTx } from "../util";
+import { getViemClient } from "../rpc";
 
 // https://docs.uniswap.org/sdk/v3/guides/swaps/routing
 export async function orderRequestFlow({
@@ -78,7 +79,7 @@ export async function getToken(
   chainId: number,
   address: Address,
 ): Promise<Token> {
-  const client = getClient(chainId);
+  const client = getViemClient(chainId);
   const [decimals, symbol, name] = await Promise.all([
     client.readContract({
       abi: erc20Abi,
