@@ -24,8 +24,8 @@ type QuoteRequestBody = {
   sellToken: string;
   buyToken: string;
   chainId: number;
-  sellAmountBeforeFee: string;
-  safeAddress: Address;
+  sellAmount: string;
+  evmAddress: Address;
 };
 
 // Define a looser request type
@@ -46,8 +46,8 @@ export async function parseQuoteRequest(
     sellToken,
     buyToken,
     chainId,
-    sellAmountBeforeFee: sellAmount,
-    safeAddress: sender,
+    sellAmount,
+    evmAddress: sender,
   } = requestBody;
   console.log(
     `TokenMap for ${chainId} has ${Object.keys(tokenMap[chainId]).length} entries`,
