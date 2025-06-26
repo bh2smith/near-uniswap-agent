@@ -2,7 +2,6 @@ import {
   addressOrSymbolParam,
   addressParam,
   AddressSchema,
-  amountParam,
   chainIdParam,
   MetaTransactionSchema,
   SignRequestResponse200,
@@ -83,10 +82,13 @@ export const pluginData = {
   components: {
     parameters: {
       chainId: chainIdParam,
-      amount: amountParam,
       address: addressParam,
       sellAmount: {
-        ...amountParam,
+        in: "query",
+        required: true,
+        schema: {
+          type: "string",
+        },
         name: "sellAmount",
         description:
           "The amount of tokens to sell before fees, represented as a decimal string in token units. Not Atoms.",
