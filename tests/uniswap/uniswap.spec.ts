@@ -9,10 +9,10 @@ const DEPLOYED_SAFE = getAddress("0x54F08c27e75BeA0cdDdb8aA9D69FD61551B19BbA");
 const chainId = 10; // BASE
 const rawQuote = {
   chainId,
-  safeAddress: DEPLOYED_SAFE,
+  evmAddress: DEPLOYED_SAFE,
   sellToken: "USDC",
   buyToken: "USDT",
-  sellAmountBeforeFee: "0.5",
+  sellAmount: "0.5",
 };
 
 describe("Uniswap Plugin", () => {
