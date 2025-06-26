@@ -7,19 +7,6 @@ import {
 import { Address, getAddress } from "viem";
 import { MetaTransaction } from "near-safe";
 
-// TODO: fix this
-// export async function validateExpressRequest(
-//   req: Request,
-//   safeSaltNonce?: string,
-// ): Promise<ExpressResponse | null> {
-//   return validateRequest<Request, Response>(
-//     req,
-//     safeSaltNonce || "0",
-//     (data: unknown, init?: { status?: number }) =>
-//       Response.json(data, init),
-//   );
-// }
-
 // CoW (and many other Dex Protocols use this to represent native asset).
 export const NATIVE_ASSET = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
