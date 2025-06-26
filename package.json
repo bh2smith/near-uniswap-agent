@@ -12,6 +12,7 @@
     "serve": "node dist/api/index.js",
     "lint": "eslint '{src,tests}/**/*.{js,jsx,ts,tsx}'",
     "fmt": "eslint --fix '{src,tests}/**/*.{js,jsx,ts,tsx}' && prettier --write '{src,tests}/**/*.{js,jsx,ts,tsx}'",
+    "deploy": "make-agent deploy -u https://near-uniswap-agent.vercel.app/",
     "test": "jest --config jest.config.ts",
     "vercel-build": "echo hello"
   },
