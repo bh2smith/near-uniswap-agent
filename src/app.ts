@@ -1,9 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { config } from "dotenv";
-import { healthRouter } from "./routes/health";
 import { uniswapRouter } from "./routes/uniswap";
-import { balancesRouter } from "./routes/balances";
 import { pluginData } from "./plugin";
 
 config(); // Load .env file
@@ -15,9 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/health", healthRouter);
 app.use("/api/tools/uniswap", uniswapRouter);
-app.use("/api/tools/balances", balancesRouter);
 // Expose plugin manifest at /.well-known/ai-plugin.json
 app.get("/.well-known/ai-plugin.json", (_, res) => {
   res.json(pluginData);
