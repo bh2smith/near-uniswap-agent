@@ -60,28 +60,12 @@ export const pluginData = {
           { $ref: "#/components/parameters/sellToken" },
           { $ref: "#/components/parameters/buyToken" },
           { $ref: "#/components/parameters/receiver" },
-          {
-            in: "query",
-            name: "sellAmountBeforeFee",
-            required: true,
-            schema: {
-              type: "string",
-            },
-            description:
-              "The amount of tokens to sell before fees, represented as a decimal string in token units. Not Atoms.",
-          },
+          { $ref: "#/components/parameters/sellAmount" },
         ],
         responses: {
           "200": { $ref: "#/components/responses/SignRequestResponse200" },
           "400": {
             description: "Error quoting order.",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/PriceEstimationError",
-                },
-              },
-            },
           },
           "404": {
             description: "No route was found for the specified order.",
@@ -101,6 +85,12 @@ export const pluginData = {
       chainId: chainIdParam,
       amount: amountParam,
       address: addressParam,
+      sellAmount: {
+        ...amountParam,
+        name: "sellAmount",
+        description:
+          "The amount of tokens to sell before fees, represented as a decimal string in token units. Not Atoms.",
+      },
       evmAddress: {
         ...addressParam,
         name: "evmAddress",
