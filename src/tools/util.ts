@@ -5,7 +5,7 @@ import {
   erc20Approve,
 } from "@bitte-ai/agent-sdk";
 import { Address, getAddress } from "viem";
-import { MetaTransaction } from "near-safe";
+import { MetaTransaction } from "@bitte-ai/types";
 
 // CoW (and many other Dex Protocols use this to represent native asset).
 export const NATIVE_ASSET = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";

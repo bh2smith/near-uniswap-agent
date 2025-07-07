@@ -1,6 +1,6 @@
-import { MetaTransaction, SignRequestData } from "near-safe";
+import { SignRequest, MetaTransaction } from "@bitte-ai/types";
 import { ParsedQuoteRequest } from "./parse";
-import { Address, erc20Abi, getAddress } from "viem";
+import { Address, erc20Abi, getAddress, Hex } from "viem";
 import {
   getNativeAsset,
   signRequestFor,
@@ -16,7 +16,7 @@ export async function orderRequestFlow({
   chainId,
   quoteRequest,
 }: ParsedQuoteRequest): Promise<{
-  transaction: SignRequestData;
+  transaction: SignRequest;
   meta: { orderData: string };
 }> {
   console.log("Quote Request", quoteRequest);
@@ -60,8 +60,8 @@ export async function orderRequestFlow({
   }
   const swapTx = {
     to: getSwapRouterAddress(chainId),
-    data: route.methodParameters.calldata,
-    value: route.methodParameters.value,
+    data: route.methodParameters.calldata as Hex,
+    value: route.methodParameters.value as Hex,
   };
   console.log("swapTx", JSON.stringify(swapTx, null, 2));
   metaTransactions.push(swapTx);
