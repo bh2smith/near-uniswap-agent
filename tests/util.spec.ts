@@ -78,7 +78,7 @@ describe("Uniswap Plugin", () => {
       }),
     ).toStrictEqual({
       to: SEPOLIA_COW,
-      value: "0x0",
+      value: "0x00",
       data: "0x095ea7b3000000000000000000000000c92e8bdf79f0507f65a392b0ab4667716bfe0110ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
     });
   });

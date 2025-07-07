@@ -7,11 +7,14 @@ import {
 } from "../tools/util";
 import { parseQuoteRequest } from "../tools/uniswap/parse";
 import { Router, Request, Response, NextFunction } from "express";
-import { handleRequest, TxData } from "@bitte-ai/agent-sdk";
+import { handleRequest } from "@bitte-ai/agent-sdk";
+import { SignRequest } from "@bitte-ai/types";
 
 const router = Router();
 
-async function logic(req: Request): Promise<TxData> {
+async function logic(
+  req: Request,
+): Promise<{ transaction: SignRequest; meta: { orderData: string } }> {
   const parsedRequest = await parseQuoteRequest(
     req,
     await getTokenMap(),
