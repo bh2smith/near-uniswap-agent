@@ -1,13 +1,6 @@
-import { Address, getAddress, isAddress, parseUnits } from "viem";
-import {
-  getTokenDetails,
-  TokenInfo,
-  getSafeBalances,
-  TokenBalance,
-  BlockchainMapping,
-} from "@bitte-ai/agent-sdk";
-import { NATIVE_ASSET } from "../util";
-import { Network } from "near-safe";
+import { Address, parseUnits } from "viem";
+import { getTokenDetails, BlockchainMapping } from "@bitte-ai/agent-sdk";
+
 export type QuoteParams = {
   sellToken: Address;
   buyToken: Address;
@@ -36,7 +29,7 @@ type LooseRequest = {
 export async function parseQuoteRequest(
   req: LooseRequest,
   tokenMap: BlockchainMapping,
-  zerionKey?: string,
+  // zerionKey?: string,
 ): Promise<ParsedQuoteRequest> {
   // TODO - Add Type Guard on Request (to determine better if it needs processing below.)
   const requestBody = req.body;
@@ -56,14 +49,21 @@ export async function parseQuoteRequest(
     throw new Error("Sell amount cannot be 0");
   }
 
-  const [balances, buyTokenData] = await Promise.all([
-    getSafeBalances(chainId, sender, zerionKey),
+  const [sellTokenData, buyTokenData] = await Promise.all([
+    // TODO(bh2smith): Put back Balance check!
+    // getBalances(sender, zerionKey),
+    getTokenDetails(chainId, sellToken, tokenMap),
     getTokenDetails(chainId, buyToken, tokenMap),
   ]);
-  const sellTokenData = sellTokenAvailable(chainId, balances, sellToken);
+  // const sellTokenData = sellTokenAvailable(chainId, balances, sellToken);
   if (!buyTokenData) {
     throw new Error(
       `Buy Token not found '${buyToken}': supply address if known`,
+    );
+  }
+  if (!sellTokenData) {
+    throw new Error(
+      `Sell Token not found '${sellToken}': supply address if known`,
     );
   }
   return {
@@ -77,37 +77,59 @@ export async function parseQuoteRequest(
   };
 }
 
-function sellTokenAvailable(
-  chainId: number,
-  balances: TokenBalance[],
-  sellTokenSymbolOrAddress: string,
-): TokenInfo {
-  let balance: TokenBalance | undefined;
-  if (isAddress(sellTokenSymbolOrAddress, { strict: false })) {
-    balance = balances.find(
-      (b) =>
-        getAddress(b.tokenAddress || NATIVE_ASSET) ===
-        getAddress(sellTokenSymbolOrAddress),
-    );
-  } else {
-    balance = balances.find(
-      (b) =>
-        b.token?.symbol.toLowerCase() ===
-        sellTokenSymbolOrAddress.toLowerCase(),
-    );
-  }
-  if (balance) {
-    return {
-      address: getAddress(balance.tokenAddress || NATIVE_ASSET),
-      decimals: balance.token?.decimals || 18,
-      symbol: balance.token?.symbol || "UNKNOWN",
-    };
-  }
-  throw new Error(
-    `Sell token (${sellTokenSymbolOrAddress}) not found in balances: ${balances.map((b) => b.token?.symbol || nativeAssetSymbol(chainId)).join(",")}`,
-  );
-}
+// function sellTokenAvailable(
+//   chainId: number,
+//   balances: TokenBalance[],
+//   sellTokenSymbolOrAddress: string,
+// ): TokenInfo {
+//   let balance: TokenBalance | undefined;
+//   if (isAddress(sellTokenSymbolOrAddress, { strict: false })) {
+//     balance = balances.find(
+//       (b) =>
+//         getAddress(b.tokenAddress || NATIVE_ASSET) ===
+//         getAddress(sellTokenSymbolOrAddress),
+//     );
+//   } else {
+//     balance = balances.find(
+//       (b) =>
+//         b.token?.symbol.toLowerCase() ===
+//         sellTokenSymbolOrAddress.toLowerCase(),
+//     );
+//   }
+//   console.log(balances);
+//   if (balance) {
+//     return {
+//       address: getAddress(balance.tokenAddress || NATIVE_ASSET),
+//       decimals: balance.token?.decimals || 18,
+//       symbol: balance.token?.symbol || "UNKNOWN",
+//     };
+//   }
+//   throw new Error(
+//     `Sell token (${sellTokenSymbolOrAddress}) not found in balances: ${balances.map((b) => b.token?.symbol || nativeAssetSymbol(chainId)).join(",")}`,
+//   );
+// }
 
-function nativeAssetSymbol(chainId: number): string {
-  return Network.fromChainId(chainId).nativeCurrency.symbol;
-}
+// function nativeAssetSymbol(chainId: number): string {
+//   return Network.fromChainId(chainId).nativeCurrency.symbol;
+// }
+
+// import type { Address } from "viem";
+// import type { TokenBalance } from "zerion-sdk";
+// import { ZerionAPI, zerionToTokenBalances } from "zerion-sdk";
+
+// export async function getBalances(
+//   address: Address,
+//   zerionKey: string,
+// ): Promise<TokenBalance[]> {
+//   try {
+//     const zerion = new ZerionAPI(zerionKey);
+//     const balances = await zerion.ui.getUserBalances(address, {
+//       useStatic: true,
+//       options: { hideDust: 0.01 },
+//     });
+//     return zerionToTokenBalances(balances.tokens);
+//   } catch (error) {
+//     console.error("Error fetching Zerion balances:", error);
+//     return [];
+//   }
+// }
