@@ -42,8 +42,14 @@ export async function orderRequestFlow({
   if (!route || !route.methodParameters) {
     const message = `Failed to get route on ${chainId} for quoteRequest`;
     console.error(message);
-    // TODO: Handle failed request
-    throw new Error(message);
+    return {
+      transaction: {
+        chainId,
+        method: "eth_sendTransaction",
+        params: [],
+      },
+      meta: { orderData: "Could not find route" },
+    };
   }
   console.log("Route found!");
   const approvalTx = await sellTokenApprovalTx({

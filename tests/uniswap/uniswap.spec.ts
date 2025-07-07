@@ -11,9 +11,9 @@ const chainId = 1868; // Soneium
 const rawQuote = {
   chainId,
   evmAddress: DEPLOYED_SAFE,
-  sellToken: "0x3A337a6adA9d885b6Ad95ec48F9b75f197b5AE35",
-  buyToken: "USDCE",
-  sellAmount: "0.5",
+  sellToken: "0x2CAE934a1e84F693fbb78CA5ED3B0A6893259441", // ASTR
+  buyToken: "0x4200000000000000000000000000000000000006", // WETH
+  sellAmount: "10",
 };
 
 describe("Uniswap Plugin", () => {

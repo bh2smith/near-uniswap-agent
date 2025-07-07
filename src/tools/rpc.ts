@@ -51,6 +51,7 @@ export function getRpcUrl(chainId: number): string {
   // Then try public RPC
   const publicRpc = PUBLIC_RPC_ENDPOINTS[chainId];
   if (publicRpc) {
+    console.log("Using Public RPC", publicRpc);
     return publicRpc;
   }
 
