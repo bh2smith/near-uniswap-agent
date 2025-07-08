@@ -10,11 +10,7 @@ const router = Router();
 async function logic(
   req: Request,
 ): Promise<{ transaction: SignRequest; meta: { orderData: string } }> {
-  const parsedRequest = await parseQuoteRequest(
-    req,
-    await getTokenMap(),
-    // getZerionKey(),
-  );
+  const parsedRequest = await parseQuoteRequest(req, await getTokenMap());
   console.log("POST Request for quote:", parsedRequest);
   const result = await orderRequestFlow(parsedRequest);
   console.log("Order request flow result:", result);
