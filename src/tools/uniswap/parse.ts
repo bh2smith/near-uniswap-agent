@@ -1,5 +1,10 @@
-import { Address, parseUnits } from "viem";
-import { getTokenDetails, BlockchainMapping } from "@bitte-ai/agent-sdk";
+import { Address, erc20Abi, formatUnits, parseUnits } from "viem";
+import {
+  getTokenDetails,
+  BlockchainMapping,
+  TokenInfo,
+} from "@bitte-ai/agent-sdk";
+import { getViemClient } from "../rpc";
 
 export type QuoteParams = {
   sellToken: Address;
@@ -29,7 +34,6 @@ type LooseRequest = {
 export async function parseQuoteRequest(
   req: LooseRequest,
   tokenMap: BlockchainMapping,
-  // zerionKey?: string,
 ): Promise<ParsedQuoteRequest> {
   // TODO - Add Type Guard on Request (to determine better if it needs processing below.)
   const requestBody = req.body;
@@ -50,8 +54,6 @@ export async function parseQuoteRequest(
   }
 
   const [sellTokenData, buyTokenData] = await Promise.all([
-    // TODO(bh2smith): Put back Balance check!
-    // getBalances(sender, zerionKey),
     getTokenDetails(chainId, sellToken, tokenMap),
     getTokenDetails(chainId, buyToken, tokenMap),
   ]);
@@ -66,70 +68,52 @@ export async function parseQuoteRequest(
       `Sell Token not found '${sellToken}': supply address if known`,
     );
   }
+  const amount = parseUnits(sellAmount, sellTokenData.decimals);
+  const { sufficient, balance } = await sufficientSellTokenBalance(
+    chainId,
+    sender,
+    sellTokenData,
+    amount,
+  );
+  if (!sufficient) {
+    const have =
+      balance !== null
+        ? formatUnits(balance, sellTokenData.decimals)
+        : "unknown";
+    throw new Error(
+      `Insufficient SellToken Balance: Have ${have} - Need ${sellAmount}`,
+    );
+  }
   return {
     chainId,
     quoteRequest: {
       sellToken: sellTokenData.address,
       buyToken: buyTokenData.address,
-      amount: parseUnits(sellAmount, sellTokenData.decimals),
+      amount,
       walletAddress: sender,
     },
   };
 }
 
-// function sellTokenAvailable(
-//   chainId: number,
-//   balances: TokenBalance[],
-//   sellTokenSymbolOrAddress: string,
-// ): TokenInfo {
-//   let balance: TokenBalance | undefined;
-//   if (isAddress(sellTokenSymbolOrAddress, { strict: false })) {
-//     balance = balances.find(
-//       (b) =>
-//         getAddress(b.tokenAddress || NATIVE_ASSET) ===
-//         getAddress(sellTokenSymbolOrAddress),
-//     );
-//   } else {
-//     balance = balances.find(
-//       (b) =>
-//         b.token?.symbol.toLowerCase() ===
-//         sellTokenSymbolOrAddress.toLowerCase(),
-//     );
-//   }
-//   console.log(balances);
-//   if (balance) {
-//     return {
-//       address: getAddress(balance.tokenAddress || NATIVE_ASSET),
-//       decimals: balance.token?.decimals || 18,
-//       symbol: balance.token?.symbol || "UNKNOWN",
-//     };
-//   }
-//   throw new Error(
-//     `Sell token (${sellTokenSymbolOrAddress}) not found in balances: ${balances.map((b) => b.token?.symbol || nativeAssetSymbol(chainId)).join(",")}`,
-//   );
-// }
-
-// function nativeAssetSymbol(chainId: number): string {
-//   return Network.fromChainId(chainId).nativeCurrency.symbol;
-// }
-
-// import type { Address } from "viem";
-// import type { TokenBalance } from "zerion-sdk";
-// import { ZerionAPI, zerionToTokenBalances } from "zerion-sdk";
-
-// export async function getBalances(
-//   address: Address,
-//   zerionKey: string,
-// ): Promise<TokenBalance[]> {
-//   try {
-//     const zerion = new ZerionAPI(zerionKey);
-//     const balances = await zerion.ui.getUserBalances(address, {
-//       useStatic: true,
-//       options: { hideDust: 0.01 },
-//     });
-//     return zerionToTokenBalances(balances.tokens);
-//   } catch (error) {
-//     console.error("Error fetching Zerion balances:", error);
-//     return [];
-//   }
-// }
+export async function sufficientSellTokenBalance(
+  chainId: number,
+  wallet: Address,
+  token: TokenInfo,
+  sellAmount: bigint,
+): Promise<{ sufficient: boolean; balance: bigint | null }> {
+  try {
+    const balance = await getViemClient(chainId).readContract({
+      address: token.address,
+      abi: erc20Abi,
+      functionName: "balanceOf",
+      args: [wallet],
+    });
+    const sufficient = balance >= sellAmount;
+    return { sufficient, balance };
+  } catch (error) {
+    console.error(
+      `Couldn't read wallet balance for token ${token.address} assuming sufficient: ${error}`,
+    );
+    return { sufficient: true, balance: null };
+  }
+}
