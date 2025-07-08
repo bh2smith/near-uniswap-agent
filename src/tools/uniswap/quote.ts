@@ -36,7 +36,6 @@ export async function getRoute(
     type: SwapType.SWAP_ROUTER_02,
   };
 
-  // TODO(bh2smith) use router.userHasSufficientBalance()!
   try {
     return router.route(
       CurrencyAmount.fromRawAmount(inToken, amountIn.toString()),
