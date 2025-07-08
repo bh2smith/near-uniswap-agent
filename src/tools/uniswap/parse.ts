@@ -76,9 +76,10 @@ export async function parseQuoteRequest(
     amount,
   );
   if (!sufficient) {
-    const have = balance
-      ? formatUnits(balance, sellTokenData.decimals)
-      : "unknown";
+    const have =
+      balance !== null
+        ? formatUnits(balance, sellTokenData.decimals)
+        : "unknown";
     throw new Error(
       `Insufficient SellToken Balance: Have ${have} - Need ${sellAmount}`,
     );
