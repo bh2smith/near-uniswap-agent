@@ -45,11 +45,12 @@ export async function orderRequestFlow({
     throw new Error(message);
   }
   console.log("Route found!");
+  const swapRouter = getSwapRouterAddress(chainId);
   const approvalTx = await sellTokenApprovalTx({
     fromTokenAddress: sellToken.address,
     chainId,
     from: quoteRequest.walletAddress,
-    spender: getSwapRouterAddress(chainId),
+    spender: swapRouter,
     sellAmount: quoteRequest.amount.toString(),
   });
   if (approvalTx) {
@@ -58,7 +59,7 @@ export async function orderRequestFlow({
     metaTransactions.push(approvalTx);
   }
   const swapTx = {
-    to: getSwapRouterAddress(chainId),
+    to: swapRouter,
     data: route.methodParameters.calldata as Hex,
     value: route.methodParameters.value as Hex,
   };
