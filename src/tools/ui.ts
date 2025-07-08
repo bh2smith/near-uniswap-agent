@@ -4,15 +4,13 @@ import { Currency, CurrencyAmount, Token } from "@uniswap/sdk-core";
 
 interface SwapDetails {
   chainId: number;
-  // route: SwapRoute;
+  // route: SwapRoute; // TODO: There is a lot more data that can be parsed out of the route for UI purposes!
   input: CurrencyAmount<Currency>;
   output: CurrencyAmount<Currency>;
 }
 
 export function parseWidgetData({
   chainId,
-  // TODO: There is a lot more data that can be parsed out of the route for UI purposes!
-  // route,
   input,
   output,
 }: SwapDetails): SwapFTData {
@@ -32,6 +30,9 @@ export function parseWidgetData({
 
 function basicCurrencyInfo(amount: CurrencyAmount<Currency>): TokenInfo {
   // TODO (bh2smith): wont work for native assets.
+  if (amount.currency.isNative) {
+    throw new Error("Native Assets Currently Unsupported");
+  }
   const token = amount.currency as Token;
   return {
     contractAddress: token.address,

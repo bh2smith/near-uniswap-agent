@@ -37,6 +37,7 @@ describe("Uniswap Plugin", () => {
         symbol: "ASTR",
         name: "Astar Token",
         address: "0x2CAE934a1e84F693fbb78CA5ED3B0A6893259441",
+        isNative: false,
       },
       toExact: () => "1.23",
     };
@@ -47,8 +48,8 @@ describe("Uniswap Plugin", () => {
         decimals: 18,
         symbol: "WETH",
         name: "Wrapped Ether",
-        isToken: true,
         address: "0x4200000000000000000000000000000000000006",
+        isNative: false,
       },
       toExact: () => "0.0012",
     };
@@ -82,7 +83,7 @@ describe("Uniswap Plugin", () => {
         decimals: 18,
       },
     });
-  }, 30000);
+  });
 });
 
 type MinimalToken = {
