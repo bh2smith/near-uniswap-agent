@@ -1,4 +1,4 @@
-import { SignRequest, MetaTransaction } from "@bitte-ai/types";
+import { SignRequest, MetaTransaction, SwapFTData } from "@bitte-ai/types";
 import { ParsedQuoteRequest } from "./parse";
 import { Address, erc20Abi, getAddress, Hex } from "viem";
 import {
@@ -10,6 +10,7 @@ import { getRoute } from "./quote";
 import { Token } from "@uniswap/sdk-core";
 import { isNativeAsset, sellTokenApprovalTx } from "../util";
 import { getViemClient } from "../rpc";
+import { parseWidgetData } from "../ui";
 
 // https://docs.uniswap.org/sdk/v3/guides/swaps/routing
 export async function orderRequestFlow({
@@ -17,16 +18,9 @@ export async function orderRequestFlow({
   quoteRequest,
 }: ParsedQuoteRequest): Promise<{
   transaction: SignRequest;
-  meta: { orderData: string };
+  meta: { ui: SwapFTData };
 }> {
   console.log("Quote Request", quoteRequest);
-  const metaTransactions: MetaTransaction[] = [];
-  if (isNativeAsset(quoteRequest.sellToken)) {
-    metaTransactions.push(
-      wrapMetaTransaction(chainId, BigInt(quoteRequest.amount)),
-    );
-    quoteRequest.sellToken = getNativeAsset(chainId).address;
-  }
   const [sellToken, buyToken] = await Promise.all([
     getToken(chainId, quoteRequest.sellToken),
     getToken(chainId, quoteRequest.buyToken),
@@ -46,6 +40,14 @@ export async function orderRequestFlow({
   }
   console.log("Route found!");
   const swapRouter = getSwapRouterAddress(chainId);
+
+  const metaTransactions: MetaTransaction[] = [];
+  if (isNativeAsset(quoteRequest.sellToken)) {
+    metaTransactions.push(
+      wrapMetaTransaction(chainId, BigInt(quoteRequest.amount)),
+    );
+    quoteRequest.sellToken = getNativeAsset(chainId).address;
+  }
   const approvalTx = await sellTokenApprovalTx({
     fromTokenAddress: sellToken.address,
     chainId,
@@ -71,7 +73,13 @@ export async function orderRequestFlow({
       from: getAddress(quoteRequest.walletAddress),
       metaTransactions,
     }),
-    meta: { orderData: "Uniswap Order Data" },
+    meta: {
+      ui: parseWidgetData({
+        chainId,
+        input: route.trade.inputAmount,
+        output: route.trade.outputAmount,
+      }),
+    },
   };
 }
 
