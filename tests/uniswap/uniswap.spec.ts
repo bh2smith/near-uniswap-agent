@@ -85,5 +85,3 @@ function toBlockChainMapping(
 }
 
 type SymbolMapping = Record<string, TokenInfo | undefined>;
-// type ChainId = number;
-// type BlockchainMapping = Record<ChainId, SymbolMapping>;
