@@ -7,6 +7,7 @@ const ALCHEMY_RPC_ENDPOINTS: Record<number, string> = {
   10: "https://opt-mainnet.g.alchemy.com/v2",
   56: "https://bsc-mainnet.g.alchemy.com/v2",
   137: "https://polygon-mainnet.g.alchemy.com/v2",
+  1868: "https://soneium-mainnet.g.alchemy.com/v2",
   8453: "https://base-mainnet.g.alchemy.com/v2",
   42161: "https://arb-mainnet.g.alchemy.com/v2",
   42220: "https://celo-mainnet.g.alchemy.com/v2",
@@ -20,6 +21,7 @@ const PUBLIC_RPC_ENDPOINTS: Record<number, string> = {
   10: "https://optimism.llamarpc.com",
   56: "https://bsc.llamarpc.com",
   137: "https://polygon.llamarpc.com",
+  1868: "https://rpc.soneium.org",
   8453: "https://base.llamarpc.com",
   42161: "https://arbitrum.llamarpc.com",
   42220: "https://forno.celo.org",
@@ -49,6 +51,7 @@ export function getRpcUrl(chainId: number): string {
   // Then try public RPC
   const publicRpc = PUBLIC_RPC_ENDPOINTS[chainId];
   if (publicRpc) {
+    console.log("Using Public RPC", publicRpc);
     return publicRpc;
   }
 

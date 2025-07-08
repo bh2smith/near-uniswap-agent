@@ -10,9 +10,10 @@ import { Address } from "viem";
 import { getRpcUrl } from "../rpc";
 
 export async function getRouter(chainId: number) {
+  const rpcUrl = getRpcUrl(chainId);
   return new AlphaRouter({
     chainId,
-    provider: new ethers.providers.JsonRpcProvider(getRpcUrl(chainId), {
+    provider: new ethers.providers.JsonRpcProvider(rpcUrl, {
       // this seems irrelevant, but it's required by ethers
       name: "Chain " + chainId,
       chainId,
@@ -34,10 +35,17 @@ export async function getRoute(
     deadline: Math.floor(Date.now() / 1000 + 1800),
     type: SwapType.SWAP_ROUTER_02,
   };
-  return router.route(
-    CurrencyAmount.fromRawAmount(inToken, amountIn.toString()),
-    outToken,
-    TradeType.EXACT_INPUT,
-    options,
-  );
+
+  try {
+    return router.route(
+      CurrencyAmount.fromRawAmount(inToken, amountIn.toString()),
+      outToken,
+      TradeType.EXACT_INPUT,
+      options,
+    );
+  } catch (error) {
+    // Couldn't find route.
+    console.error(String(error));
+    return null;
+  }
 }

@@ -36,6 +36,7 @@ export const pluginData = {
         10, // Optimism
         56, // Binance Smart Chain (BSC)
         137, // Polygon
+        1868, // Soneium
         8453, // Base (Coinbase L2)
         42161, // Arbitrum One
         42220, // CELO
