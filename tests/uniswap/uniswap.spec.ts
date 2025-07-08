@@ -2,7 +2,9 @@ import { getAddress } from "viem";
 import { orderRequestFlow } from "../../src/tools/uniswap/orderFlow";
 import { parseQuoteRequest } from "../../src/tools/uniswap/parse";
 import { getTokenMap } from "../../src/tools/util";
+import { parseWidgetData } from "../../src/tools/ui";
 import { BlockchainMapping, TokenInfo } from "@bitte-ai/agent-sdk";
+import { Currency, CurrencyAmount } from "@uniswap/sdk-core";
 
 // Safe Associated with max-normal.near on Bitte Wallet.
 const DEPLOYED_SAFE = getAddress("0x54F08c27e75BeA0cdDdb8aA9D69FD61551B19BbA");
@@ -26,6 +28,62 @@ describe("Uniswap Plugin", () => {
     const signRequest = await orderRequestFlow(quoteRequest);
     console.log(JSON.stringify(signRequest, null, 2));
   }, 30000);
+
+  it("uiData", async () => {
+    const astr = {
+      currency: {
+        chainId: 1868,
+        decimals: 18,
+        symbol: "ASTR",
+        name: "Astar Token",
+        address: "0x2CAE934a1e84F693fbb78CA5ED3B0A6893259441",
+        isNative: false,
+      },
+      toExact: () => "1.23",
+    };
+
+    const weth = {
+      currency: {
+        chainId: 1868,
+        decimals: 18,
+        symbol: "WETH",
+        name: "Wrapped Ether",
+        address: "0x4200000000000000000000000000000000000006",
+        isNative: false,
+      },
+      toExact: () => "0.0012",
+    };
+    const ui = parseWidgetData({
+      chainId,
+      input: astr as unknown as CurrencyAmount<Currency>,
+      output: weth as unknown as CurrencyAmount<Currency>,
+    });
+    console.log(JSON.stringify(ui, null, 2));
+    expect(ui).toEqual({
+      network: {
+        name: "Soneium Mainnet",
+        icon: "",
+      },
+      type: "swap",
+      fee: "0",
+      tokenIn: {
+        contractAddress: "0x2CAE934a1e84F693fbb78CA5ED3B0A6893259441",
+        amount: "1.23",
+        usdValue: 0,
+        name: "Astar Token",
+        symbol: "ASTR",
+        decimals: 18,
+      },
+      tokenOut: {
+        contractAddress: "0x4200000000000000000000000000000000000006",
+        amount: "0.0012",
+        usdValue: 0,
+        name: "Wrapped Ether",
+        symbol: "WETH",
+        decimals: 18,
+      },
+    });
+  });
 });
 
 type MinimalToken = {
