@@ -17,9 +17,9 @@
     "vercel-build": "echo hello"
   },
   "dependencies": {
-    "@bitte-ai/agent-sdk": "^0.2.3",
+    "@bitte-ai/agent-sdk": "^0.2.4",
     "@uniswap/sdk-core": "^7.7.2",
-    "@uniswap/smart-order-router": "^4.22.5",
+    "@uniswap/smart-order-router": "^4.22.6",
     "cors": "^2.8.5",
     "ethers": "5.7.2",
     "express": "^4.21.2",
@@ -30,7 +30,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.10",
+    "@types/node": "^24.0.13",
     "@types/swagger-ui-express": "^4.1.8",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "concurrently": "^9.2.0",
