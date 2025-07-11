@@ -7,19 +7,20 @@ import { BlockchainMapping, TokenInfo } from "@bitte-ai/agent-sdk";
 import { Currency, CurrencyAmount } from "@uniswap/sdk-core";
 
 // Safe Associated with max-normal.near on Bitte Wallet.
-const DEPLOYED_SAFE = getAddress("0x54F08c27e75BeA0cdDdb8aA9D69FD61551B19BbA");
+const DEPLOYED_SAFE = getAddress("0xB00b4C1e371DEe4F6F32072641430656D3F7c064");
 
 const chainId = 1868; // Soneium
 const rawQuote = {
   chainId,
   evmAddress: DEPLOYED_SAFE,
   sellToken: "0x2CAE934a1e84F693fbb78CA5ED3B0A6893259441", // ASTR
-  buyToken: "0x4200000000000000000000000000000000000006", // WETH
+  // buyToken: "0x4200000000000000000000000000000000000006", // WETH
+  buyToken: "0x3A337a6adA9d885b6Ad95ec48F9b75f197b5AE35", // USDT
   sellAmount: "10",
 };
 
 describe("Uniswap Plugin", () => {
-  it.skip("orderRequestFlow", async () => {
+  it.only("orderRequestFlow", async () => {
     const tokenMap = await fetchMinimalTopTokens(chainId, 50);
     const quoteRequest = await parseQuoteRequest(
       { body: { ...rawQuote } },
