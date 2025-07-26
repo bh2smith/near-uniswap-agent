@@ -6,6 +6,7 @@ import {
 } from "@bitte-ai/agent-sdk";
 import { Address, getAddress } from "viem";
 import { MetaTransaction } from "@bitte-ai/types";
+import { SUPPORTED_CHAIN_IDS } from "../constants";
 
 // CoW (and many other Dex Protocols use this to represent native asset).
 export const NATIVE_ASSET = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
@@ -28,10 +29,10 @@ export async function sellTokenApprovalTx(args: {
     `Checking approval for account=${from}, token=${sellToken} on chainId=${chainId}`,
   );
   const allowance = await checkAllowance(
+    chainId,
     getAddress(from),
     getAddress(sellToken),
     spender,
-    chainId,
   );
 
   if (allowance < BigInt(sellAmount)) {
@@ -98,6 +99,6 @@ export async function getTokenMap(): Promise<BlockchainMapping> {
     return tokenMapInstance;
   }
   console.log("Loading TokenMap...");
-  tokenMapInstance = await loadTokenMap(getEnvVar("TOKEN_MAP_URL"));
+  tokenMapInstance = await loadTokenMap(SUPPORTED_CHAIN_IDS);
   return tokenMapInstance;
 }
