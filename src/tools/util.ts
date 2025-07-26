@@ -49,47 +49,12 @@ export function isNativeAsset(token: string): boolean {
   return token.toLowerCase() === NATIVE_ASSET.toLowerCase();
 }
 
-export enum OrderKind {
-  BUY = "buy",
-  SELL = "sell",
-}
-
-export function applySlippage(
-  order: { kind: OrderKind; buyAmount: string; sellAmount: string },
-  bps: number,
-): { buyAmount?: string; sellAmount?: string } {
-  const scaleFactor = BigInt(10000);
-  if (order.kind === OrderKind.SELL) {
-    const slippageBps = BigInt(10000 - bps);
-    return {
-      buyAmount: (
-        (BigInt(order.buyAmount) * slippageBps) /
-        scaleFactor
-      ).toString(),
-    };
-  } else if (order.kind === OrderKind.BUY) {
-    const slippageBps = BigInt(10000 + bps);
-    return {
-      sellAmount: (
-        (BigInt(order.sellAmount) * slippageBps) /
-        scaleFactor
-      ).toString(),
-    };
-  }
-  return order;
-}
-
 export function getEnvVar(key: string): string {
   const value = process.env[key];
   if (!value) {
     throw new Error(`${key} is not set`);
   }
   return value;
-}
-
-export function getSafeSaltNonce(): string {
-  const bitteProtocolSaltNonce = "130811896738364156958237239906781888512";
-  return process.env.SAFE_SALT_NONCE || bitteProtocolSaltNonce;
 }
 
 let tokenMapInstance: BlockchainMapping | null = null;
