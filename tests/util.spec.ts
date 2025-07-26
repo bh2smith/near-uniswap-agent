@@ -1,8 +1,6 @@
 import {
-  applySlippage,
   isNativeAsset,
   NATIVE_ASSET,
-  OrderKind,
   sellTokenApprovalTx,
 } from "../src/tools/util";
 import { checksumAddress, getAddress, zeroAddress } from "viem";
@@ -17,31 +15,6 @@ const chainId = 11155111;
 const spender = getAddress("0xc92e8bdf79f0507f65a392b0ab4667716bfe0110");
 
 describe("Uniswap Plugin", () => {
-  it("applySlippage", async () => {
-    const amounts = { buyAmount: "1000", sellAmount: "1000" };
-    expect(
-      applySlippage({ kind: OrderKind.BUY, ...amounts }, 50),
-    ).toStrictEqual({
-      sellAmount: "1005",
-    });
-    expect(
-      applySlippage({ kind: OrderKind.SELL, ...amounts }, 50),
-    ).toStrictEqual({
-      buyAmount: "995",
-    });
-
-    const smallAmounts = { buyAmount: "100", sellAmount: "100" };
-    expect(
-      applySlippage({ kind: OrderKind.BUY, ...smallAmounts }, 100),
-    ).toStrictEqual({
-      sellAmount: "101",
-    });
-    expect(
-      applySlippage({ kind: OrderKind.SELL, ...smallAmounts }, 100),
-    ).toStrictEqual({
-      buyAmount: "99",
-    });
-  });
   it("isNativeAsset", () => {
     expect(isNativeAsset("word")).toBe(false);
     expect(isNativeAsset(NATIVE_ASSET)).toBe(true);

@@ -8,6 +8,7 @@ import {
   SignRequestSchema,
 } from "@bitte-ai/agent-sdk";
 import { config } from "dotenv";
+import { SUPPORTED_CHAIN_IDS } from "./constants";
 config();
 
 const url = "https://near-uniswap-agent.vercel.app";
@@ -31,18 +32,7 @@ export const pluginData = {
       tools: [{ type: "generate-evm-tx" }],
       image: `${url}/uniswap.svg`,
       categories: ["defi"],
-      chainIds: [
-        1, // Mainnet
-        10, // Optimism
-        56, // Binance Smart Chain (BSC)
-        137, // Polygon
-        1868, // Soneium
-        8453, // Base (Coinbase L2)
-        42161, // Arbitrum One
-        42220, // CELO
-        43114, // Avalanche
-        81457, // Blast
-      ],
+      chainIds: SUPPORTED_CHAIN_IDS,
     },
   },
   paths: {
