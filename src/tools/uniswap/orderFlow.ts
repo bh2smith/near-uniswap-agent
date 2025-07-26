@@ -74,7 +74,7 @@ export async function orderRequestFlow({
       metaTransactions,
     }),
     meta: {
-      ui: parseWidgetData({
+      ui: await parseWidgetData({
         chainId,
         input: route.trade.inputAmount,
         output: route.trade.outputAmount,

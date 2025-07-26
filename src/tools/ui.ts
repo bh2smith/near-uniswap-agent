@@ -1,6 +1,7 @@
 import type { SwapFTData, TokenInfo } from "@bitte-ai/types";
 import { getChainById } from "@bitte-ai/agent-sdk";
 import { Currency, CurrencyAmount, Token } from "@uniswap/sdk-core";
+import { externalPriceFeed } from "./prices";
 
 interface SwapDetails {
   chainId: number;
@@ -9,11 +10,11 @@ interface SwapDetails {
   output: CurrencyAmount<Currency>;
 }
 
-export function parseWidgetData({
+export async function parseWidgetData({
   chainId,
   input,
   output,
-}: SwapDetails): SwapFTData {
+}: SwapDetails): Promise<SwapFTData> {
   const chain = getChainById(chainId);
 
   return {
@@ -23,12 +24,14 @@ export function parseWidgetData({
     },
     type: "swap",
     fee: "0",
-    tokenIn: basicCurrencyInfo(input),
-    tokenOut: basicCurrencyInfo(output),
+    tokenIn: await basicCurrencyInfo(input),
+    tokenOut: await basicCurrencyInfo(output),
   };
 }
 
-function basicCurrencyInfo(amount: CurrencyAmount<Currency>): TokenInfo {
+async function basicCurrencyInfo(
+  amount: CurrencyAmount<Currency>,
+): Promise<TokenInfo> {
   // TODO (bh2smith): wont work for native assets.
   if (amount.currency.isNative) {
     throw new Error("Native Assets Currently Unsupported");
@@ -37,7 +40,7 @@ function basicCurrencyInfo(amount: CurrencyAmount<Currency>): TokenInfo {
   return {
     contractAddress: token.address,
     amount: amount.toExact(),
-    usdValue: 0,
+    usdValue: (await externalPriceFeed({ ...token })) || 0,
     name: token.name || token.symbol!,
     symbol: token.symbol!,
     decimals: token.decimals,
