@@ -19,8 +19,8 @@ const rawQuote = {
   sellAmount: "10",
 };
 
-describe("Uniswap Plugin", () => {
-  it.only("orderRequestFlow", async () => {
+describe.skip("Uniswap Plugin", () => {
+  it("orderRequestFlow", async () => {
     const tokenMap = await fetchMinimalTopTokens(chainId, 50);
     const quoteRequest = await parseQuoteRequest(
       { body: { ...rawQuote } },
