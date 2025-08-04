@@ -9,7 +9,10 @@ const router = Router();
 
 async function logic(req: Request): Promise<{
   transaction?: SignRequest;
-  meta: { ui?: SwapFTData; error?: string };
+  meta: {
+    ui?: SwapFTData;
+    error?: string;
+  };
 }> {
   try {
     const parsedRequest = await parseQuoteRequest(req, await getTokenMap());

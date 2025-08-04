@@ -10,7 +10,7 @@ import { getRoute } from "./quote";
 import { Token } from "@uniswap/sdk-core";
 import { isNativeAsset, sellTokenApprovalTx } from "../util";
 import { getViemClient } from "../rpc";
-import { parseWidgetData } from "../ui";
+// import { parseWidgetData } from "../ui";
 
 // https://docs.uniswap.org/sdk/v3/guides/swaps/routing
 export async function orderRequestFlow({
@@ -18,7 +18,7 @@ export async function orderRequestFlow({
   quoteRequest,
 }: ParsedQuoteRequest): Promise<{
   transaction: SignRequest;
-  meta: { ui: SwapFTData };
+  meta: { ui?: SwapFTData };
 }> {
   console.log("Quote Request", quoteRequest);
   const [sellToken, buyToken] = await Promise.all([
@@ -74,11 +74,11 @@ export async function orderRequestFlow({
       metaTransactions,
     }),
     meta: {
-      ui: parseWidgetData({
-        chainId,
-        input: route.trade.inputAmount,
-        output: route.trade.outputAmount,
-      }),
+      //   ui: parseWidgetData({
+      //     chainId,
+      //     input: route.trade.inputAmount,
+      //     output: route.trade.outputAmount,
+      //   }),
     },
   };
 }
