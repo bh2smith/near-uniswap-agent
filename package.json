@@ -19,31 +19,31 @@
   "dependencies": {
     "@bitte-ai/agent-sdk": "^0.2.7",
     "@uniswap/sdk-core": "^7.7.2",
-    "@uniswap/smart-order-router": "^4.22.11",
+    "@uniswap/smart-order-router": "^4.22.20",
     "cors": "^2.8.5",
     "ethers": "5.7.2",
     "express": "^4.21.2",
-    "near-safe": "^0.10.0",
-    "viem": "^2.33.1"
+    "near-safe": "0.11.0",
+    "viem": "^2.34.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.3.0",
     "@types/swagger-ui-express": "^4.1.8",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/eslint-plugin": "^8.40.0",
     "concurrently": "^9.2.0",
-    "dotenv": "^16.6.1",
-    "eslint": "^9.32.0",
+    "dotenv": "17.2.1",
+    "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-prettier": "^5.5.4",
     "globals": "^15.15.0",
     "jest": "^30.0.5",
     "make-agent": "^0.3.5",
     "prettier": "^3.6.2",
-    "ts-jest": "^29.4.0",
-    "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "ts-jest": "^29.4.1",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
   }
 }
