@@ -1,4 +1,4 @@
-import { Network } from "near-safe";
+import { getChainById } from "@bitte-ai/agent-sdk";
 import { createPublicClient, http, PublicClient } from "viem";
 
 // Alchemy RPC endpoints for different chains
@@ -56,8 +56,7 @@ export function getRpcUrl(chainId: number): string {
   }
 
   // Finally fallback to near-safe Network
-  const network = Network.fromChainId(chainId);
-  return network.rpcUrl;
+  return getChainById(chainId).rpcUrls.default.http[0];
 }
 
 export function getViemClient(chainId: number): PublicClient {
