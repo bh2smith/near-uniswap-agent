@@ -1,11 +1,12 @@
-import { SignRequest, MetaTransaction, SwapFTData } from "@bitte-ai/types";
 import { ParsedQuoteRequest } from "./parse";
 import { Address, erc20Abi, getAddress, Hex } from "viem";
 import {
   getNativeAsset,
   signRequestFor,
   wrapMetaTransaction,
-} from "@bitte-ai/agent-sdk";
+  SignRequest,
+  MetaTransaction,
+} from "@bitte-ai/agent-sdk/evm";
 import { getRoute } from "./quote";
 import { Token } from "@uniswap/sdk-core";
 import { isNativeAsset, sellTokenApprovalTx } from "../util";
@@ -18,7 +19,7 @@ export async function orderRequestFlow({
   quoteRequest,
 }: ParsedQuoteRequest): Promise<{
   transaction: SignRequest;
-  meta: { ui?: SwapFTData };
+  meta: { ui?: object };
 }> {
   console.log("Quote Request", quoteRequest);
   const [sellToken, buyToken] = await Promise.all([

@@ -1,5 +1,4 @@
-import type { SwapFTData, TokenInfo } from "@bitte-ai/types";
-import { getChainById } from "@bitte-ai/agent-sdk";
+import { getClientForChain } from "@bitte-ai/agent-sdk/evm";
 import { Currency, CurrencyAmount, Token } from "@uniswap/sdk-core";
 
 interface SwapDetails {
@@ -13,8 +12,8 @@ export function parseWidgetData({
   chainId,
   input,
   output,
-}: SwapDetails): SwapFTData {
-  const chain = getChainById(chainId);
+}: SwapDetails): object {
+  const chain = getClientForChain(chainId).chain!;
 
   return {
     network: {
@@ -28,7 +27,7 @@ export function parseWidgetData({
   };
 }
 
-function basicCurrencyInfo(amount: CurrencyAmount<Currency>): TokenInfo {
+function basicCurrencyInfo(amount: CurrencyAmount<Currency>): object {
   // TODO (bh2smith): wont work for native assets.
   if (amount.currency.isNative) {
     throw new Error("Native Assets Currently Unsupported");

@@ -3,7 +3,7 @@ import {
   getTokenDetails,
   BlockchainMapping,
   TokenInfo,
-} from "@bitte-ai/agent-sdk";
+} from "@bitte-ai/agent-sdk/evm";
 import { getViemClient } from "../rpc";
 
 export type QuoteParams = {

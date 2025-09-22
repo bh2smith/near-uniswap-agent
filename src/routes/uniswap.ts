@@ -3,14 +3,14 @@ import { getTokenMap } from "../tools/util";
 import { parseQuoteRequest } from "../tools/uniswap/parse";
 import { Router, Request, Response, NextFunction } from "express";
 import { handleRequest } from "@bitte-ai/agent-sdk";
-import { SignRequest, SwapFTData } from "@bitte-ai/types";
+import { SignRequest } from "@bitte-ai/agent-sdk/evm";
 
 const router = Router();
 
 async function logic(req: Request): Promise<{
   transaction?: SignRequest;
   meta: {
-    ui?: SwapFTData;
+    ui?: object; // SwapFTData
     error?: string;
   };
 }> {

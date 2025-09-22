@@ -1,12 +1,12 @@
+import { Address, getAddress } from "viem";
+import { SUPPORTED_CHAIN_IDS } from "../constants";
 import {
   BlockchainMapping,
   loadTokenMap,
   checkAllowance,
   erc20Approve,
-} from "@bitte-ai/agent-sdk";
-import { Address, getAddress } from "viem";
-import { MetaTransaction } from "@bitte-ai/types";
-import { SUPPORTED_CHAIN_IDS } from "../constants";
+  MetaTransaction,
+} from "@bitte-ai/agent-sdk/evm";
 
 // CoW (and many other Dex Protocols use this to represent native asset).
 export const NATIVE_ASSET = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
